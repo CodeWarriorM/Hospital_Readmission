@@ -1,7 +1,15 @@
+#API
 fastapi
 uvicorn
+streamlit
+requests
+
+#ML
 numpy
 pandas
 matplotlib
 jupyter
 scikit-learn
+
+#.env
+python-dotenv
