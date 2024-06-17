@@ -4,7 +4,7 @@ run_api_local:
 
 #Docker local
 build_container_local:
-	docker build . -t $$IMAGE
+	docker build --tag=$$IMAGE:dev .
 
 run_container_local:
 	docker run -it -e PORT=8000 -p 8000:8000 $$IMAGE:dev
@@ -17,9 +17,11 @@ create_artifacts_repo:
 	gcloud artifacts repositories create $$ARTIFACTSREPO --repository-format=docker \
 		--location=$$GCP_REGION --description="Repository for storing images"
 
-
 build_for_production:
 	docker build -t  $$GCP_REGION-docker.pkg.dev/$$GCP_PROJECT/$$ARTIFACTSREPO/$$IMAGE:prod .
+
+m1_build_image_production:
+	docker build --platform linux/amd64 -t $$GCP_REGION-docker.pkg.dev/$$GCP_PROJECT/$$ARTIFACTSREPO/$$IMAGE:prod .
 
 push_image_production:
 	docker push $$GCP_REGION-docker.pkg.dev/$$GCP_PROJECT/$$ARTIFACTSREPO/$$IMAGE:prod

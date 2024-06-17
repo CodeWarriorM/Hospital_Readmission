@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+streamlit
+requests
+numpy
+pandas
+matplotlib
+jupyter
+scikit-learn
+python-dotenv
