@@ -12,5 +12,8 @@ seaborn
 jupyter
 scikit-learn
 
+#DL
+tensorflow
+
 #.env
 python-dotenv
