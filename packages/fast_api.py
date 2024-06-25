@@ -57,3 +57,5 @@ def predict(
 
     # return {'Hospital readmission:': prediction}
     return 'NO MODEL YET'
+
+predict()
