@@ -25,8 +25,8 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df['n_emergency'] = df['n_emergency'].map({0: 0, 1: 1}).fillna(2).astype(int)
 
     df = df.drop(columns=[col for col in df.columns if col in [
-                            # 'n_lab_procedures',
-                            # 'n_medications',
+                            'n_lab_procedures',
+                            'n_medications',
                             'medical_specialty',
                             'glucose_test',
                             ]

@@ -50,12 +50,12 @@ def predict(
 
     X_preproc = preprocess_features(X_pred)
     print(X_preproc)
-    # prediction = app.state.model.predict(X_preproc)[0]
-    # print()
-    # print('Prediction done.', prediction, type(prediction), float(prediction))
-    # print()
+    prediction = app.state.model.predict(X_preproc)[0]
+    print()
+    print('Prediction done.', prediction, type(prediction), float(prediction))
+    print()
 
-    # return {'Hospital readmission:': prediction}
-    return 'NO MODEL YET'
+    return {'Hospital readmission:': prediction}
+    # return 'NO MODEL YET'
 
 predict()
