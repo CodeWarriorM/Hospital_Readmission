@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+def clean_training_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df[df['diag_1'] != 'Missing']
     df = df[df['diag_2'] != 'Missing']
     df = df[df['diag_3'] != 'Missing']
@@ -18,20 +18,14 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
                                 '[80-90)': 0.8,
                                 '[90-100)': 0.9,
                                 '[100-110)': 1.0})
-    df['n_lab_procedures_grouped'] = (df['n_lab_procedures']    )# // 10).astype(int)
-    df['n_medications_grouped'] = (df['n_medications']          )# // 5).astype(int)
     df['n_outpatient'] = df['n_outpatient'].map({0: 0, 1: 1}).fillna(2).astype(int)
     df['n_inpatient'] = df['n_inpatient'].map({0: 0, 1: 1}).fillna(2).astype(int)
     df['n_emergency'] = df['n_emergency'].map({0: 0, 1: 1}).fillna(2).astype(int)
 
-    df = df.drop(columns=[col for col in df.columns if col in [
-                            'n_lab_procedures',
-                            'n_medications',
+    df = df.drop(columns=[
                             'medical_specialty',
                             'glucose_test',
-                            ]
-                        ],
-                )
+                        ])
     return df
 
 def load_data() -> pd.DataFrame:
