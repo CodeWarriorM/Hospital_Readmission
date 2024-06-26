@@ -15,7 +15,7 @@ def root():
 
 @app.get('/predict')
 def predict(
-    age='[70-80)',
+    age=0.7,
     diag_1='Circulatory',
     diag_2='Respiratory',
     diag_3='Other',
@@ -50,12 +50,13 @@ def predict(
 
     X_preproc = preprocess_features(X_pred)
     print(X_preproc)
-    # prediction = app.state.model.predict(X_preproc)[0]
-    # print()
-    # print('Prediction done.', prediction, type(prediction), float(prediction))
-    # print()
 
-    # return {'Hospital readmission:': prediction}
-    return 'NO MODEL YET'
+    prediction = app.state.model.predict(X_preproc)[0]
+    print()
+    print('Prediction done.', prediction, type(prediction), float(prediction))
+    print()
+
+    return {'Hospital readmission:': prediction}
+    # return 'NO MODEL YET'
 
 predict()
