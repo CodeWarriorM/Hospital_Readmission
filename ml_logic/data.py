@@ -26,6 +26,9 @@ def clean_training_data(df: pd.DataFrame) -> pd.DataFrame:
                             'medical_specialty',
                             'glucose_test',
                         ])
+
+    print('Dataset cleaned. New shape ', df.shape)
+
     return df
 
 def load_data() -> pd.DataFrame:

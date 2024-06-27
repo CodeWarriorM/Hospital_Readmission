@@ -16,19 +16,19 @@ def root():
 @app.get('/predict')
 def predict(
     age=0.7,
-    diag_1='Circulatory',
-    diag_2='Respiratory',
-    diag_3='Other',
-    A1Ctest='no',
-    change='no',
-    diabetes_med='yes',
     time_in_hospital=5,
     n_lab_procedures=43,
     n_procedures=1,
     n_medications=16,
     n_outpatient=0,
     n_inpatient=1,
-    n_emergency=0
+    n_emergency=0,
+    diag_1='Circulatory',
+    diag_2='Respiratory',
+    diag_3='Other',
+    A1Ctest='no',
+    change='no',
+    diabetes_med='yes',
 ):
 
     X_pred = pd.DataFrame({
@@ -48,15 +48,12 @@ def predict(
         'diabetes_med': diabetes_med,
     }, index=[0])
 
-    X_preproc = preprocess_features(X_pred)
-    print(X_preproc)
-
-    prediction = app.state.model.predict(X_preproc)[0]
+    prediction = app.state.model.predict(X_pred)[0]
     print()
-    print('Prediction done.', prediction, type(prediction), float(prediction))
+    print('Prediction done.')
+    print('Readmission: ', prediction)
     print()
 
     return {'Hospital readmission:': prediction}
-    # return 'NO MODEL YET'
 
-predict()
+# predict()
