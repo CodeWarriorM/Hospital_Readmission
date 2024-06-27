@@ -32,3 +32,7 @@ deploy_to_cloud_run:
 #Streamlit
 streamlit:
 	-@streamlit run packages/app.py
+
+# FUNCTIONALITY
+run_predict:
+	python -c 'from packages.fast_api import predict; predict()'

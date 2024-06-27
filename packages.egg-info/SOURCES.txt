@@ -5,6 +5,7 @@ interface/main.py
 packages/__init__.py
 packages/app.py
 packages/fast_api.py
+packages/frontend.py
 packages/utils.py
 packages.egg-info/PKG-INFO
 packages.egg-info/SOURCES.txt

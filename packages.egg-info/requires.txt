@@ -5,6 +5,7 @@ requests
 numpy
 pandas
 matplotlib
+seaborn
 jupyter
 scikit-learn
 python-dotenv

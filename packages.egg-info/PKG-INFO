@@ -8,6 +8,7 @@ Requires-Dist: requests
 Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: matplotlib
+Requires-Dist: seaborn
 Requires-Dist: jupyter
 Requires-Dist: scikit-learn
 Requires-Dist: python-dotenv
