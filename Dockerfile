@@ -16,11 +16,11 @@ COPY ml_logic /ml_logic
 COPY setup.py /setup.py
 
 #Run container locally
-CMD uvicorn packages.fast_api:app --reload --host 0.0.0.0
+#CMD uvicorn packages.fast_api:app --reload --host 0.0.0.0
 
 
 #Run container deployed -> GCP
-# CMD uvicorn packages.fast_api:app --reload --host 0.0.0.0 --port $PORT
+CMD uvicorn packages.fast_api:app --reload --host 0.0.0.0 --port $PORT
 
 ##docker build . -t api
 ##docker run -p 8080:8000 api

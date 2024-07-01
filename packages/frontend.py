@@ -1,115 +1,137 @@
 import streamlit as st
 import requests
-import pandas as pd
-from PIL import Image
-import base64
 import matplotlib.pyplot as plt
-import shap
-import numpy as np
+from packages.utils import classify_diag_level1
 
-#st.image('raw_data/hospital.jpg', caption='Hospital', use_column_width=True)
-def convert_jpg_to_png(jpg_file, png_file):
-    with Image.open(jpg_file) as img:
-        img.save(png_file, 'PNG')
-
-def get_base64(bin_file):
-    with open(bin_file, 'rb') as f:
-        data=f.read()
-    return base64.b64encode(data).decode()
-
-def set_background(png_file):
-    bin_str = get_base64(png_file)
-    page_bg_img = f'''
-    <style>
-    body {{
-    background-image: url("data:image/png;base64,{bin_str}");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    }}
-    </style>
-    '''
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-
-jpg_file = 'raw_data/hospital.jpg'
-png_file = 'raw_data/hospital.png'
-convert_jpg_to_png(jpg_file, png_file)
-
-set_background(png_file)
-
-st.title('Hospital Readmission App')
-st.header('Will my patient be readmitted to the hospital within 30 days after discharge?')
-
+# Title and description
+st.title('Hospital Readmission Prediction App')
 st.write('Select your features below:')
 
-age = st.selectbox('Age', ['[0-10)', '[10-20)', '[20-30)', '[30-40)', '[40-50)', '[50-60)', '[60-70)', '[70-80)', '[80-90)', '[90-100)'])
-diag_1 = st.selectbox('Primary Diagnosis', ['Circulatory',  'Injury', 'Digestive', 'Respiratory','Diabetes', 'Musculoskeletal', 'Other','Missing'])
-diag_2 = st.selectbox('Secondary Diagnosis 1', ['Circulatory',  'Injury', 'Digestive', 'Respiratory','Diabetes', 'Musculoskeletal', 'Other','Missing'])
-diag_3 = st.selectbox('Secondary Diagnosis 2', ['Circulatory',  'Injury', 'Digestive', 'Respiratory', 'Diabetes', 'Musculoskeletal','Other', 'Missing'])
-A1Ctest = st.selectbox('A1C Test Result', ['no', 'yes'])
-change = st.selectbox('Change in Medication', ['no', 'yes'])
-diabetes_med = st.selectbox('On Diabetes Medication', ['no', 'yes'])
-time_in_hospital = st.slider('Select a value for number of days in hospital', min_value=1, max_value=14, value=5, step=1)
-n_lab_procedures = st.slider('Select a value for number of procedures performed', min_value=1, max_value=113, value=43, step=1)
-n_procedures = st.slider('Select a value for number of laboratory procedures', min_value=0, max_value=6, value=1, step=1)
-n_medications = st.slider('Select a value for number of medications administered', min_value=1, max_value=79, value=16, step=1)
-n_outpatient = st.slider('Select a value for number of outpatient visits', min_value=0, max_value=33, value=0, step=1)
-n_inpatient = st.slider('Select a value for number of inpatient visits', min_value=0, max_value=15, value=0, step=1)
-n_emergency = st.slider('Select a value for number of visits to the emergency room', min_value=0, max_value=64, value=0, step=1)
+# Sidebar sliders for user input
+age = st.slider('Age', min_value=1, max_value=100, value=25, step=1)
+gender = st.selectbox('Gender', ['Male','Female'])
+race = st.selectbox('Race', ['AfricanAmerican', 'Asian', 'Caucasian', 'Hispanic', 'Other'])
+diag_1 = st.slider('Diagnosis 1 (ICD-9 Code)', min_value=0.0, max_value=1000.0, value=100.0, step=1.0)
+insulin = st.selectbox('Insulin', [0, 1])
+change = st.selectbox('Change', [0, 1])
+num_lab_procedures = st.slider('Number of Lab Procedures', min_value=1, max_value=150, value=50, step=1)
+num_medications = st.slider('Number of Medications', min_value=1, max_value=100, value=11, step=1)
+number_diagnoses = st.slider('Number of Diagnoses', min_value=1, max_value=20, value=5, step=1)
+admission_type_id = st.selectbox('Admission Type ID', ['1', '2', '3', '4', '5'])
+time_in_hospital = st.slider('Time in Hospital', min_value=1, max_value=14, value=14, step=1)
 
+#Params compute
+long_stay = 1 if time_in_hospital > 7 else 0
+
+# Button to trigger prediction
 if st.button('Predict'):
-    # Create a DataFrame from the input
-    X_pred = pd.DataFrame({
-        'age': [age],
-        'time_in_hospital': [time_in_hospital],
-        'n_lab_procedures': [n_lab_procedures],
-        'n_procedures': [n_procedures],
-        'n_medications': [n_medications],
-        'n_outpatient': [n_outpatient],
-        'n_inpatient': [n_inpatient],
-        'n_emergency': [n_emergency],
-        'diag_1': [diag_1],
-        'diag_2': [diag_2],
-        'diag_3': [diag_3],
-        'A1Ctest': [A1Ctest],
-        'change': [change],
-        'diabetes_med': [diabetes_med],
-    })
+    # Convert inputs to appropriate types
+    params = {
+        'age': int(age),
+        'gender': gender,
+        'race': race,
+        'level1_diag_1': float(classify_diag_level1(diag_1)),
+        'insulin': int(insulin),
+        'change': int(change),
+        'num_lab_procedures': int(num_lab_procedures),
+        'num_medications': int(num_medications),
+        'number_diagnoses': int(number_diagnoses),
+        'admission_type_id': str(admission_type_id),
+        'time_in_hospital': int(time_in_hospital),
+        'long_stay': int(long_stay),
 
-# Method 1
-url = 'https://hospitalreadmission1575-jgoxnpqt5a-ew.a.run.app/predict'
-params = {'time_in_hospital': time_in_hospital,
-          'n_lab_procedures': n_lab_procedures,
-          'n_procedures': n_procedures,
-          'n_medications': n_medications,
-          'n_outpatient': n_outpatient,
-          'n_inpatient': n_inpatient,
-          'n_emergency': n_emergency,
-          'age' : age,
-          'diag_1' : diag_1,
-          'diag_2' : diag_2,
-          'diag_3' : diag_3,
-          'A1Ctest' : A1Ctest,
-          'change' : change,
-          'diabetes_med' : diabetes_med
-          }
+        # Fixed
+        'discharge_disposition_id': "1",
+        'admission_source_id': "7",
+        'max_glu_serum': "-99.0",
+        'A1Cresult': "-99.0",
+        'metformin': 0,
+        'repaglinide': 0,
+        'nateglinide': 0,
+        'chlorpropamide': 0,
+        'glimepiride': 0,
+        'acetohexamide': 0,
+        'glipizide': 0,
+        'glyburide': 0,
+        'tolbutamide': 0,
+        'pioglitazone': 0,
+        'rosiglitazone': 0,
+        'acarbose': 0,
+        'miglitol': 0,
+        'troglitazone': 0,
+        'tolazamide': 0,
+        'glyburide_metformin': 0,
+        'glipizide_metformin': 0,
+        'glimepiride_pioglitazone': 0,
+        'metformin_pioglitazone': 0,
+        'diabetesMed': 'Yes',
+        'comorbidity_count': 3,
+        'total_visits': 0,
+        'numchange': 0,
+        'nummed': 1,
+
+        # Interaction
+        'num_medications_time_in_hospital': 54,
+        'num_medications_num_procedures': 0,
+        'time_in_hospital_num_lab_procedures': 177,
+        'num_medications_num_lab_procedures': 1062,
+        'num_medications_number_diagnoses': 162,
+        'age_number_diagnoses': 135,
+        'age_comorbidity_count': 30,
+        'change_num_medications': 18,
+        'number_diagnoses_time_in_hospital': 27,
+        'num_medications_numchange': 18,
+
+    }
+
+    # Endpoint URL of your FastAPI application
+    url = 'https://hospitalreadmission1575-jgoxnpqt5a-ew.a.run.app/predict'
+
+    try:
+        # Make a GET request to the FastAPI endpoint
+        response = requests.get(url, params=params)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            result = response.json()
+
+            # Access the correct keys from the response
+            prediction = result['Hospital readmission']
+            probability = result['Probability']
+
+            # Display prediction in a user-friendly format
+            readmission_text = 'No' if prediction == 0.0 else 'Yes'
+            color = 'red' if prediction == 0.0 else 'green'
+
+            st.markdown(f"<h2 style='color:{color};'>Predicted Hospital Readmission: <b>{readmission_text}</b></h2>", unsafe_allow_html=True)
+
+            # Create a bar plot for the probability
+            # Create a donut plot for the probability
+            fig, ax = plt.subplots()
+            size = 0.3
+
+            # Create data for the donut chart
+            values = [probability, 1 - probability]
+            colors = ['#66b3ff', '#e6e6e6']
+
+            ax.pie(values, colors=colors, radius=1, wedgeprops=dict(width=size, edgecolor='w'))
+
+            # Add a circle in the center to create the donut shape
+            centre_circle = plt.Circle((0,0), 1-size, color='white', fc='white', linewidth=0)
+            fig.gca().add_artist(centre_circle)
+
+            # Equal aspect ratio ensures that pie is drawn as a circle
+            ax.axis('equal')
+
+            # Add the percentage text in the center of the donut chart
+            plt.text(0, 0, f'{probability * 100:.2f}%', ha='center', va='center', fontsize=20, color='black')
 
 
-response = requests.get(url=url,
-                        params=params).json()
+            # Display the plot in Streamlit
+            st.pyplot(fig)
 
+        else:
+            st.write('Failed to receive prediction. Please try again.')
 
-
-st.write('Will my patient be readmitted?')
-st.write(str(response['Hospital readmission:'].capitalize()))
-
-def display_shap_summary_plot(shap_values, X):
-    st.set_option('deprecation.showPyplotGlobalUse', False)
-    plt.title('SHAP Summary Plot')
-    shap.summary_plot(shap_values, X, plot_type="bar")
-    st.pyplot(bbox_inches='tight')
-    plt.clf()
-st.title("SHAP Summary Plot")
-
-if st.button('Generate SHAP Summary Plot'):
-    display_shap_summary_plot(shap.shap_values, X_pred)
+    except requests.exceptions.RequestException as e:
+        st.write('Error making prediction request:', e)
