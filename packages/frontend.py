@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Title and description
 st.title('Hospital Readmission Prediction App')
@@ -157,8 +158,15 @@ if st.button('Predict'):
             st.markdown(f"<h2 style='color:{color};'>Predicted Hospital Readmission: <b>{readmission_text}</b></h2>", unsafe_allow_html=True)
 
             # Create a bar plot for the probability
+            sns.set(style="whitegrid")
+
+            # Create a bar plot for the probability
             fig, ax = plt.subplots()
             size = 0.3
+
+            # Set the background color to yellow
+            fig.patch.set_facecolor('#94ECBE')
+            ax.set_facecolor('#94ECBE')
 
             # Create data for the donut chart
             values = [probability, 1 - probability]
@@ -176,7 +184,6 @@ if st.button('Predict'):
 
             # Add the percentage text in the center of the donut chart
             plt.text(0, 0, f'Probability:\n{probability * 100:.0f}%', ha='center', va='center', fontsize=20, color=color)
-
 
             # Display the plot in Streamlit
             st.pyplot(fig)
