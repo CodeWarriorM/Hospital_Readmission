@@ -31,7 +31,7 @@ deploy_to_cloud_run:
 
 #Streamlit
 streamlit:
-	-@streamlit run packages/frontend.py
+	-@streamlit run interface/frontend.py
 
 # FUNCTIONALITY
 run_predict:
