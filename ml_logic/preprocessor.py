@@ -1,20 +1,18 @@
 import os
 import pickle
-import numpy as np
 import pandas as pd
-
-from ml_logic.data import clean_training_data
-
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import MinMaxScaler
-
-from sklearn.pipeline import Pipeline, FunctionTransformer
+from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer, make_column_selector
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
+from imblearn.pipeline import Pipeline as ImbPipeline
+from imblearn.over_sampling import SMOTE
+from ml_logic.data import DataCleaner
 
 def preprocessor() -> Pipeline:
     project_path = os.path.dirname(os.path.dirname(__file__))
 
-    with open(project_path + '/preprocessor/preprocessor.pkl', 'rb') as file:
+    with open(project_path + '/preprocessor/preprocessing_pipeline.pkl', 'rb') as file:
         pipe_preproc = pickle.load(file)
 
     return pipe_preproc

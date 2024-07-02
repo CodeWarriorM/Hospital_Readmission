@@ -12,6 +12,7 @@ seaborn
 jupyter
 scikit-learn
 shap
+imblearn
 
 #.env
 python-dotenv
