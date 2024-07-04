@@ -4,7 +4,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from io import StringIO
+import pickle
+import shap
 
+
+
+# Load the SHAP explainer
+def load_explainer():
+    with open("models/explainer.pkl", "rb") as explainer_file:
+        explainer = pickle.load(explainer_file)
+    return explainer
+
+explainer = load_explainer()
 # Set up page navigation in the sidebar
 page = st.sidebar.selectbox("Select a Page", ["User Input", "Description"])
 
@@ -129,6 +140,8 @@ if page == "User Input":
             data['insulin'] = data['insulin'].map(insulin_mapping)
             data['change'] = data['change'].map(change_mapping)
             data['admission_type'] = data['admission_type'].map(admission_type_mapping)
+            data['gender'] = data['gender'].map({'Male': 1, 'Female': 0})
+            data['race'] = data['race'].map({'AfricanAmerican': 1, 'Asian': 2, 'Caucasian': 3, 'Hispanic': 4, 'Other': 5})
 
             # Compute derived parameters
             data['long_stay'] = data['time_in_hospital'].apply(lambda x: 1 if x > 7 else 0)
@@ -146,9 +159,9 @@ if page == "User Input":
             # Create a prediction for each row
             for idx, row in data.iterrows():
                 params = {
-                    'age': int(row['age']),
-                    'gender': row['gender'],
-                    'race': row['race'],
+                    'age': row['age'],
+                    'gender': int(row['gender']),
+                    'race': int(row['race']),
                     'level1_diag_1': float(row['diag_1']),
                     'insulin': int(row['insulin']),
                     'change': int(row['change']),
@@ -250,6 +263,14 @@ if page == "User Input":
 
                         # Display the plot in Streamlit
                         st.pyplot(fig)
+
+                        #Display Shap Plots
+                        fig2, ax = plt.subplots()
+                        size = 0.3
+                        row = data.iloc[[idx]]
+                        shap_values = explainer.shap_values(row, check_additivity=False)
+                        shap.summary_plot(shap_values, row)
+                        st.pyplot(fig2)
 
                     else:
                         st.write(f"Failed to receive prediction for row {idx+1}. Please try again.")
