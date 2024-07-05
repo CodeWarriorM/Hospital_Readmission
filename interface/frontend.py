@@ -159,7 +159,7 @@ if page == "User Input":
             # Create a prediction for each row
             for idx, row in data.iterrows():
                 params = {
-                    'age': row['age'],
+                    'age': int(row['age']),
                     'gender': int(row['gender']),
                     'race': int(row['race']),
                     'level1_diag_1': float(row['diag_1']),
@@ -265,6 +265,9 @@ if page == "User Input":
                         st.pyplot(fig)
 
                         #Display Shap Plots
+                        st.subheader("SHAP Summary Plot")
+                        st.write('Provides a global explanation of the model, showing the feature importance for all samples.')
+                        row = data.iloc[idx:idx+1]
                         fig2, ax = plt.subplots()
                         size = 0.3
                         row = data.iloc[[idx]]
@@ -272,6 +275,25 @@ if page == "User Input":
                         shap.summary_plot(shap_values, row)
                         st.pyplot(fig2)
 
+                        st.subheader("SHAP Waterfall Plot")
+                        st.write('Provides a local explanation for a specific prediction, showing how each feature contributes to the final prediction for the specific instance.')
+                        fig3, ax =plt.subplots()
+                        size = 0.3
+                        shap.waterfall_plot(shap.Explanation(values=shap_values[0], base_values=explainer.expected_value, data =row.iloc[0]))
+                        st.pyplot(fig3)
+
+                        #st.subheader("SHAP Dependence Plot")
+                        #st.write('This plot shows the relationship between the SHAP values of a feature and the feature itself. It helps in understanding how changes in the feature values impact the prediction. In this example, it is plotted for the feature "age".')
+                        #fig4, ax = plt.subplots()
+                        #shap.dependence_plot("age", shap_values, row, interaction_index=None, ax = ax)
+                        #st.pyplot(fig4)
+
+                        #st.subheader("SHAP Force Plot")
+                        #st.write('This plot provides a visual explanation of a single prediction. It shows how the feature values push the prediction from the base value to the final output.')
+                        #fig5, ax = plt.subplots()
+                        #shap.initjs()
+                        #shap.force_plot(explainer.expected_value, shap_values[0], row.iloc[0], matplotlib=True)
+                        #st.pyplot(fig5)
                     else:
                         st.write(f"Failed to receive prediction for row {idx+1}. Please try again.")
 
