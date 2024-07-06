@@ -228,18 +228,18 @@ if page == "User Input":
                         size = 0.3
 
                         # Set the background color to yellow
-                        fig.patch.set_facecolor('#94ECBE')
-                        ax.set_facecolor('#94ECBE')
+                        fig.patch.set_facecolor('#1EBE9B')
+                        ax.set_facecolor('#1EBE9B')
 
                         # Create data for the donut chart
                         values = [probability, 1 - probability]
                         color = 'red' if probability > 0.8 else 'orange' if 0.4 < probability <= 0.8 else 'green'
                         colors = [color, '#e6e6e6']
 
-                        ax.pie(values, colors=colors, radius=1, wedgeprops=dict(width=size, edgecolor='#94ECBE'))
+                        ax.pie(values, colors=colors, radius=1, wedgeprops=dict(width=size, edgecolor='#1EBE9B'))
 
                         # Add a circle in the center to create the donut shape
-                        centre_circle = plt.Circle((0,0), 1-size, color='#94ECBE', fc='#94ECBE', linewidth=0)
+                        centre_circle = plt.Circle((0,0), 1-size, color='#1EBE9B', fc='#1EBE9B', linewidth=0)
                         fig.gca().add_artist(centre_circle)
 
                         # Equal aspect ratio ensures that pie is drawn as a circle
@@ -329,3 +329,29 @@ else:
 
     # Display the table
     st.write(pd.DataFrame(df).to_html(index=False), unsafe_allow_html=True)
+
+    # Add space between table and expander
+    st.markdown("---")  # Blank line for spacing
+    st.write("### Learn more about the project")
+
+    # Dropdown box for Project Information
+    st.write("""
+        This project aims to predict hospital readmission of patients, particularly focusing on diabetic patients. Hospital readmission rates are indicators of hospital quality and affect the cost of care. This prediction model can help hospitals save millions of dollars while improving the quality of care by identifying the factors that lead to higher readmission rates.
+
+        #### Data Information
+        The model is trained on a medical claims dataset provided by the Center for Clinical and Translational Research at Virginia Commonwealth University, which is an abstract of the Health Facts database (Cerner Corporation). The original dataset can be found [here](https://archive.ics.uci.edu/ml/datasets/Diabetes+130-US+hospitals+for+years+1999-2008).
+
+        #### Model Information
+        We utilized a Random Forest model to predict hospital readmissions. The model achieved an accuracy of 81.48% in our evaluations.
+
+        ### GitHub Repository
+        For more details about the project, including code implementation and further information, you can visit the [GitHub repository](https://github.com/CodeWarriorM/hospital_readmission).
+
+        ### Contact Information
+        For any inquiries or feedback, please contact the project contributors:
+        - Michael Augustynik (augustynik@me.com)
+        - Manuela Brunner (Manuela@brunner-sr.de)
+        - Olaf Hilgenfeld (olaf.hilgenfeld@gmail.com)
+        - Gaelle Massart (gaelle@id-transition.eu)
+        - Virginia Wenger (wenger_virginia@gmx.ch)
+        """)
