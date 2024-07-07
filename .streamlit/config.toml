@@ -4,3 +4,5 @@ backgroundColor = "#1EBE9B"
 secondaryBackgroundColor = "#E3ECEC"
 textColor = "black"
 font = "sans serif"
+[deprecation]
+showPyplotGlobalUse = false

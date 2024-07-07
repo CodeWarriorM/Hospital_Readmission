@@ -3,10 +3,15 @@ from fastapi import FastAPI
 from ml_logic.registry import load_model
 from ml_logic.preprocessor import preprocess_features
 import warnings
+import pickle
+import shap
 
 app = FastAPI()
 app.state.model = load_model('best_model.pkl')
+explainer = shap.Explainer('best_model.pkl')
 
+with open("models/explainer.pkl", "wb") as explainer_file:
+    pickle.dump(explainer, explainer_file)
 # Define the endpoint for root
 @app.get("/")
 def root():
