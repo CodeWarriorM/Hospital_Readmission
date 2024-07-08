@@ -84,14 +84,10 @@ class DataCleaner:
         df['total_visits'] = df['number_outpatient'] + df['number_emergency'] + df['number_inpatient']
 
         # Recode columns
-        admission_type_mapping = {2: 1, 7: 1, 6: 5, 8: 5}
-        discharge_disposition_mapping = {
-            6: 1, 8: 1, 9: 1, 13: 1, 3: 2, 4: 2, 5: 2, 14: 2, 22: 2, 23: 2, 24: 2, 12: 10,
-            15: 10, 16: 10, 17: 10, 25: 18, 26: 18
-        }
-        admission_source_mapping = {
-            2: 1, 3: 1, 5: 4, 6: 4, 10: 4, 22: 4, 25: 4, 15: 9, 17: 9, 20: 9, 21: 9, 13: 11, 14: 11
-        }
+        admission_type_mapping = {1: 1, 2: 1, 3: 2, 4: 3, 5: 4, 6: 1, 7: 4, 8: 4, 9: 4}
+        discharge_disposition_mapping = {1: 1, 2: 2, 3: 2, 4: 2, 5: 2, 6: 3, 7: 4, 8: 2, 9: 5, 10: 2, 11: 2, 12: 2, 13: 2, 14: 1, 15: 2, 16: 6, 17: 6, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 3, 24: 1, 25: 6, 26: 6, 27: 6, 28: 6, 29: 6}
+        admission_source_mapping = {1: 1, 2: 1, 3: 1, 4: 2, 5: 2, 6: 2, 7: 3, 8: 4, 9: 5, 10: 2, 11: 4, 12: 4, 13: 4, 14: 4, 15: 5, 16: 5, 17: 2, 18: 2, 19: 2, 20: 2, 21: 5}
+
 
         df['admission_type_id'] = df['admission_type_id'].replace(admission_type_mapping)
         df['discharge_disposition_id'] = df['discharge_disposition_id'].replace(discharge_disposition_mapping)
@@ -181,9 +177,9 @@ class DataCleaner:
             else:
                 return 0
 
-        df['level1_diag1'] = df['level1_diag_1'].apply(classify_diag_level1)
-        df['level1_diag2'] = df['level1_diag_2'].apply(classify_diag_level1)
-        df['level1_diag3'] = df['level1_diag_3'].apply(classify_diag_level1)
+        df['level1_diag_1'] = df['level1_diag_1'].apply(classify_diag_level1)
+        df['level1_diag_2'] = df['level1_diag_2'].apply(classify_diag_level1)
+        df['level1_diag_3'] = df['level1_diag_3'].apply(classify_diag_level1)
 
         # Drop original columns that have been encoded or aggregated
         df.drop(['number_outpatient', 'number_emergency', 'number_inpatient', 'diag_1', 'diag_2', 'diag_3'],
@@ -200,5 +196,45 @@ class DataCleaner:
         # Dropping Duplicates
         df = df.drop_duplicates(subset= ['patient_nbr'], keep = 'first')
         df = df.drop(['encounter_id', 'patient_nbr'], axis=1)
+
+        # Select only the columns to keep
+        columns_to_keep = [
+            'readmitted',
+            'age',
+            'gender',
+            'race',
+            'level1_diag_1',
+            'level1_diag_2',
+            'level1_diag_3',
+            'num_medications',
+            'num_lab_procedures',
+            'num_procedures',
+            'numchange',
+            'nummed',
+            'A1Cresult',
+            'metformin',
+            'pioglitazone',
+            'insulin',
+            'glipizide',
+            'glimepiride',
+            'diabetesMed',
+            'comorbidity_count',
+            'number_diagnoses',
+            'admission_type_id',
+            'discharge_disposition_id',
+            'admission_source_id',
+            'total_visits',
+            'time_in_hospital',
+            'change',
+            'age|comorbidity_count',
+            'age|number_diagnoses',
+            'num_medications|num_lab_procedures',
+            'num_medications|time_in_hospital',
+            'num_medications|num_procedures',
+            'num_medications|number_diagnoses',
+            'number_diagnoses|time_in_hospital',
+            'time_in_hospital|num_lab_procedures'
+        ]
+        df = df[columns_to_keep]
 
         return df

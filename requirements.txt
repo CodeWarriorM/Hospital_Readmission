@@ -3,6 +3,7 @@ fastapi
 uvicorn
 streamlit
 requests
+joblib
 
 #ML
 numpy
