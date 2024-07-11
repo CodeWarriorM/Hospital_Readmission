@@ -4,7 +4,7 @@ uvicorn
 streamlit
 requests
 joblib
-
+ml_logic @git+https://github.com/CodeWarriorM/hospital_readmission/ml_logic.git
 #ML
 numpy
 pandas
