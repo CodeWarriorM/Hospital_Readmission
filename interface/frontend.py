@@ -16,12 +16,12 @@ page = st.sidebar.selectbox("Select a Page", ["User Input", "Description"])
 
 # Mapping
 discharge_disposition_mapping = {
-    1: 'Home',
-    2: 'Transferred',
-    3: 'Expired',
-    4: 'Left AMA',
-    5: 'Inpatient',
-    6: 'Other/Unknown'
+    'Home': 1,
+    'Transferred': 2,
+    'Expired': 3,
+    'Left AMA': 4,
+    'Inpatient': 5,
+    'Other/Unknown': 6
 }
 
 diag_1_mapping = {
