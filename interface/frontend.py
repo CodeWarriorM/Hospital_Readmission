@@ -190,8 +190,8 @@ if page == "User Input":
                     })
 
                     # Important: Preprocess Input!
-                    processed_data = preprocess_features(input_df)
-                    shap_values = explainer.shap_values(processed_data, check_additivity=False)
+                    #processed_data = preprocess_features(input_df)
+                    #shap_values = explainer.shap_values(processed_data, check_additivity=False)
 
                     # Endpoint URL of your FastAPI application
                     url = 'https://hospitalreadmission1575-jgoxnpqt5a-ew.a.run.app/predict'
