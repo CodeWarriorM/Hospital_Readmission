@@ -172,7 +172,7 @@ if page == "User Input":
                         'time_in_hospital_num_lab_procedures': row['time_in_hospital_num_lab_procedures']
                     }
                     # Get SHAP values
-                    explainer = load_shap_explainer('shap_explainer.pkl')
+                    #explainer = load_shap_explainer('shap_explainer.pkl')
 
                     # Create DataFrame from params
                     input_df = pd.DataFrame([params])
