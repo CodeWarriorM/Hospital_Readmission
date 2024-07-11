@@ -10,7 +10,7 @@ import shap
 import joblib
 #from ml_logic.registry import load_shap_explainer
 from ml_logic.preprocessor import preprocess_features
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 # Set up page navigation in the sidebar
 page = st.sidebar.selectbox("Select a Page", ["User Input", "Description"])
 
