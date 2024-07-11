@@ -246,13 +246,13 @@ if page == "User Input":
                             st.pyplot(fig)
 
                             # Display SHAP summary plot
-                            st.subheader("SHAP Summary Plot")
-                            st.write('Provides a global explanation of the model, showing the feature importance for all samples.')
+                            #st.subheader("SHAP Summary Plot")
+                            #st.write('Provides a global explanation of the model, showing the feature importance for all samples.')
 
-                            fig2, ax = plt.subplots()
-                            size = 0.3
-                            shap.summary_plot(shap_values, processed_data)
-                            st.pyplot(fig2)
+                            #fig2, ax = plt.subplots()
+                            #size = 0.3
+                            #shap.summary_plot(shap_values, processed_data)
+                            #st.pyplot(fig2)
 
                         else:
                             st.write(f"Failed to receive prediction for row {idx+1}. Please try again.")
