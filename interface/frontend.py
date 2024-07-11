@@ -9,7 +9,7 @@ from io import StringIO
 import shap
 import joblib
 #from ml_logic.registry import load_shap_explainer
-from ml_logic.preprocessor import preprocess_features
+#from ml_logic.preprocessor import preprocess_features
 
 # Set up page navigation in the sidebar
 page = st.sidebar.selectbox("Select a Page", ["User Input", "Description"])
