@@ -8,7 +8,7 @@ import pandas as pd
 from io import StringIO
 import shap
 import joblib
-from ml_logic.registry import load_shap_explainer
+#from ml_logic.registry import load_shap_explainer
 from ml_logic.preprocessor import preprocess_features
 
 # Set up page navigation in the sidebar
