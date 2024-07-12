@@ -86,16 +86,16 @@ if page == "User Input":
         # Generate a CSV template with example data
         csv_template = StringIO()
         example_data = pd.DataFrame({
-            'age': [70],
-            'gender': ['Female'],
-            'race': ['Caucasian'],
+            'age': [90],
+            'gender': ['Male'],
+            'race': ['Asian'],
             'discharge_disposition_id': ['Home'],
-            'diag_1': ['Diabetes'],
-            'total_visits': [0],
+            'diag_1': ['Circulatory'],
+            'total_visits': [5],
             'number_diagnoses': [9],
-            'num_procedures': [0],
-            'num_lab_procedures': [59],
-            'num_medications': [18]
+            'num_procedures': [2],
+            'num_lab_procedures': [66],
+            'num_medications': [48]
         })
         example_data.to_csv(csv_template, index=False)
 
