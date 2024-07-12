@@ -227,7 +227,7 @@ if page == "User Input":
 
                             # Create data for the donut chart
                             values = [probability, 1 - probability]
-                            color = 'red' if probability > 0.8 else 'orange' if 0.4 < probability <= 0.8 else 'green'
+                            color = 'red' if probability > 0.65 else 'orange' if 0.4 < probability <= 0.65 else 'green'
                             colors = [color, '#e6e6e6']
 
                             ax.pie(values, colors=colors, radius=1, wedgeprops=dict(width=size, edgecolor='#1EBE9B'))
