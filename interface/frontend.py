@@ -210,7 +210,7 @@ if page == "User Input":
 
                             # Display prediction in a user-friendly format
                             readmission_text = 'No' if prediction == 0.0 else 'Yes'
-                            color = 'red' if probability > 0.8 else 'orange' if 0.4 < probability <= 0.8 else 'green'
+                            color = 'red' if probability > 0.65 else 'orange' if 0.4 < probability <= 0.65 else 'green'
 
                             st.markdown(f"<h2 style='color:{color};'>Predicted Hospital Readmission: <b>{readmission_text}</b></h2>", unsafe_allow_html=True)
 
