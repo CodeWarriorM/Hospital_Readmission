@@ -112,17 +112,17 @@ def predict(
     return {'Hospital readmission': float(prediction),
             'Probability': float(probability)}
 
-# Define the endpoint for CSV prediction
-@app.post('/predict_csv')
-def predict_csv(file: UploadFile = File(...)):
-    X_pred = pd.read_csv(file.file)
+# # Define the endpoint for CSV prediction
+# @app.post('/predict_csv')
+# def predict_csv(file: UploadFile = File(...)):
+#     X_pred = pd.read_csv(file.file)
 
-    prediction = app.state.model.predict(X_pred)[0]
-    prediction = float(prediction)
+#     prediction = app.state.model.predict(X_pred)[0]
+#     prediction = float(prediction)
 
-    probability = app.state.model.predict_proba(X_pred)[0][1]
-    probability = float(probability)
+#     probability = app.state.model.predict_proba(X_pred)[0][1]
+#     probability = float(probability)
 
-    # Return prediction
-    return {'Hospital readmission': float(prediction),
-            'Probability': float(probability)}
+#     # Return prediction
+#     return {'Hospital readmission': float(prediction),
+#             'Probability': float(probability)}

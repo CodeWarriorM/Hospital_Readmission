@@ -2,10 +2,13 @@ fastapi
 uvicorn
 streamlit
 requests
+joblib
 numpy
 pandas
 matplotlib
 seaborn
 jupyter
 scikit-learn
+shap
+imblearn
 python-dotenv
