@@ -36,9 +36,9 @@ See Makefile
 ## Usage Instructions
 The project includes a Streamlit application that allows you to interact with the model through a web interface.
 1. **Open the App**:
-LINK
+2. https://hospitalreadmission-qehnkpadaoehh33tzrvf2a.streamlit.app/
 
-2. **Input Data**:
+3. **Input Data**:
 - Via User Interface: Enter the patient data into the form on the Streamlit app.
 - Via CSV Upload: Upload a CSV file containing the patient data. The CSV file should be placed in the raw_data folder. Ensure the CSV file format matches the expected format.
 
